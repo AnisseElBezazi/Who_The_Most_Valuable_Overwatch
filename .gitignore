@@ -1,0 +1,16 @@
+ .env
+ node_modules/
+ vendor/
+ .DS_Store
+ *.log
+ 
+ # Dossiers de build
+ /dist/
+ /build/
+ 
+ # Fichiers temporaires
+ *.tmp
+ *.swp
+ 
+ # Fichiers système
+ Thumbs.db

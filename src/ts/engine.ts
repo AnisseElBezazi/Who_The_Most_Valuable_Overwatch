@@ -1,0 +1,1 @@
+// L'algorithme de calcul de "value"

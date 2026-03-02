@@ -1,0 +1,1 @@
+// Interfaces TS pour les données joueurs
