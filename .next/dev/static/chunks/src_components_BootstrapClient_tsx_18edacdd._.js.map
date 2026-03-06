@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///C:/laragon/www/Who_The_Most_Valuable_Overwatch/src/components/BootstrapClient.tsx"],"sourcesContent":["\"use client\";\r\nimport { useEffect } from \"react\";\r\n\r\nexport default function BootstrapClient() {\r\n  useEffect(() => {\r\n    require(\"bootstrap/dist/js/bootstrap.bundle.min.js\");\r\n  }, []);\r\n  return null;\r\n}\r\n"],"names":[],"mappings":";;;;AACA;;AADA;;AAGe,SAAS;;IACtB,IAAA,0KAAS;qCAAC;;;;;;QAEV;oCAAG,EAAE;IACL,OAAO;AACT;GALwB;KAAA"}}]
-}
