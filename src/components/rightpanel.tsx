@@ -1,20 +1,89 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./rightpanel.css";
 
 export default function RightPanel() {
   const [isHeroGridOpen, setIsHeroGridOpen] = useState(true);
+  const [searchInput, setSearchInput] = useState("");
+  const [searchedBattletag, setSearchedBattletag] = useState("");
+  const [playerData, setPlayerData] = useState<any>(null);
+  const [playerStats, setPlayerStats] = useState<any>(null);
+  const [heroes, setHeroes] = useState<any[]>([]);
+  const [selectedHero, setSelectedHero] = useState<any>(null);
+
+  useEffect(() => {
+    async function fetchHeroes() {
+      try {
+        const res = await fetch("/api/heroes");
+        const data = await res.json();
+        setHeroes(data);
+        if (data && data.length > 0) {
+          setSelectedHero(data[0]);
+        }
+      } catch (e) {
+        console.error("Failed to fetch heroes", e);
+      }
+    }
+    fetchHeroes();
+  }, []);
+
+  const handleSearch = async () => {
+    if (!searchInput) return;
+    const formattedBattletag = searchInput.replace("#", "-");
+    setSearchedBattletag(formattedBattletag);
+
+    try {
+      const resPlayer = await fetch(`/api/player/${formattedBattletag}/info`);
+      const dataPlayer = await resPlayer.json();
+      setPlayerData(dataPlayer);
+    } catch (e) {
+      console.error("Erreur lors de la récupération des infos du joueur", e);
+    }
+  };
+
+  useEffect(() => {
+    if (!searchedBattletag) return;
+
+    async function fetchStats() {
+      try {
+        const gamemode = "quickplay";
+        const heroQuery = selectedHero ? selectedHero.key : "all-heroes";
+        const resStats = await fetch(
+          `/api/player/${searchedBattletag}/stats?gamemode=${gamemode}&platform=console&hero=${heroQuery}`,
+        );
+        const dataStats = await resStats.json();
+        setPlayerStats(dataStats);
+      } catch (e) {
+        console.error(
+          "Erreur lors de la récupération des statistiques du joueur",
+          e,
+        );
+      }
+    }
+
+    fetchStats();
+  }, [searchedBattletag, selectedHero]);
 
   return (
-    <div className="d-flex flex-column align-items-end"> {/* <-- h-100 ajouté ici */}
-      {/* Barre de recherche (Fixe) - Calée à droite */}
+    <div className="d-flex flex-column align-items-end">
+      {" "}
       <div className="d-flex mb-3 shadow-sm mt-2 panel-search-right flex-shrink-0">
         <input
           type="text"
           className="form-control border-theme-gray search-input-box-right"
           placeholder="Pseudo#0000"
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSearch();
+            }
+          }}
         />
-        <button className="bg-theme-gray search-submit-btn-right">
+        <button
+          className="bg-theme-gray search-submit-btn-right"
+          onClick={handleSearch}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
@@ -26,8 +95,6 @@ export default function RightPanel() {
           </svg>
         </button>
       </div>
-
-      {/* Header Avatar (Fixe) */}
       <div className="mb-0 position-relative header-container-right flex-shrink-0">
         <div className="position-absolute top-0 end-0 bg-dark header-banner-right"></div>
         <div className="bg-white p-1 position-absolute header-avatar-right">
@@ -41,11 +108,10 @@ export default function RightPanel() {
           Genji92
         </div>
       </div>
-
-      {/* Contenu qui s'étire */}
-      <div className="bg-white d-flex flex-column pt-4 pb-3 shadow-sm flex-grow-1 main-content-right"> {/* <-- d-flex flex-column ajouté ici */}
-        <div className="main-content-inner-right flex-grow-1 d-flex flex-column"> {/* <-- flex-grow-1 d-flex flex-column ajoutés ici */}
-          
+      <div className="bg-white d-flex flex-column pt-4 pb-3 shadow-sm flex-grow-1 main-content-right">
+        {" "}
+        <div className="main-content-inner-right flex-grow-1 d-flex flex-column">
+          {" "}
           {/* Titre du héros - Alignement droite */}
           <div className="mb-3 px-3 mt-2 text-end">
             <div className="fw-bold text-uppercase text-dark lh-1 fs-2">
@@ -53,7 +119,6 @@ export default function RightPanel() {
             </div>
             <div className="fw-bold text-theme-gray">Support</div>
           </div>
-
           {/* Grille de sélection */}
           <div className="px-3 mt-2 w-100" style={{ maxWidth: "260px" }}>
             <button
@@ -66,14 +131,17 @@ export default function RightPanel() {
 
             {isHeroGridOpen && (
               <div className="hero-grid-right p-1 border rounded bg-white">
-                {Array.from({ length: 16 }).map((_, i) => (
+                {heroes.map((hero, i) => (
                   <div
-                    key={i}
-                    className={`hero-item-right ${i === 0 ? "active" : ""}`}
+                    key={hero.key}
+                    className={`hero-item-right ${hero.key === selectedHero?.key ? "active" : ""}`}
+                    onClick={() => setSelectedHero(hero)}
+                    style={{ cursor: "pointer" }}
+                    title={hero.name}
                   >
                     <img
-                      src="https://d15f34w2p8l1cc.cloudfront.net/overwatch/985b06beae46b7ba3ca87d1512d0fc62ca7f206ceca58ef16fc44d43a1cc84ed.png"
-                      alt="hero"
+                      src={hero.portrait}
+                      alt={hero.name}
                       className="w-100 h-100 object-fit-cover"
                     />
                   </div>
@@ -81,15 +149,16 @@ export default function RightPanel() {
               </div>
             )}
           </div>
-
           {/* Statistiques */}
-          <div className="px-3 mt-4 mb-auto w-100" style={{ maxWidth: "260px" }}>
+          <div
+            className="px-3 mt-4 mb-auto w-100"
+            style={{ maxWidth: "260px" }}
+          >
             <StatLine label="Nano Boost Assists" value="4.5" />
             <StatLine label="Sleep Dart Success" value="45%" />
             <StatLine label="Biotic Grenade Kills" value="12" />
             <StatLine label="Unscoped Accuracy" value="62%" />
           </div>
-
           {/* Rank Section */}
           <div className="d-flex align-items-center px-3 mt-4 justify-content-end w-100">
             <div className="text-end me-3">
@@ -100,14 +169,19 @@ export default function RightPanel() {
               88
             </div>
           </div>
-          
         </div>
       </div>
     </div>
   );
 }
 
-const StatLine = ({ label, value }) => (
+const StatLine = ({
+  label,
+  value,
+}: {
+  label: string;
+  value: string | number;
+}) => (
   <div className="d-flex justify-content-between mb-1 border-bottom border-light pb-1 w-100">
     <span className="text-secondary fw-bold" style={{ fontSize: "0.75rem" }}>
       {label}

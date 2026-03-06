@@ -1,20 +1,88 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./leftpanel.css";
 
 export default function LeftPanel() {
   const [isHeroGridOpen, setIsHeroGridOpen] = useState(true);
+  const [searchInput, setSearchInput] = useState("");
+  const [searchedBattletag, setSearchedBattletag] = useState("");
+  const [playerData, setPlayerData] = useState<any>(null);
+  const [playerStats, setPlayerStats] = useState<any>(null);
+  const [heroes, setHeroes] = useState<any[]>([]);
+  const [selectedHero, setSelectedHero] = useState<any>(null);
+
+  useEffect(() => {
+    async function fetchHeroes() {
+      try {
+        const res = await fetch("/api/heroes");
+        const data = await res.json();
+        setHeroes(data);
+        if (data && data.length > 0) {
+          setSelectedHero(data[0]);
+        }
+      } catch (e) {
+        console.error("Failed to fetch heroes", e);
+      }
+    }
+    fetchHeroes();
+  }, []);
+
+  const handleSearch = async () => {
+    if (!searchInput) return;
+    const formattedBattletag = searchInput.replace("#", "-");
+    setSearchedBattletag(formattedBattletag);
+
+    try {
+      const resPlayer = await fetch(`/api/player/${formattedBattletag}/info`);
+      const dataPlayer = await resPlayer.json();
+      setPlayerData(dataPlayer);
+    } catch (e) {
+      console.error("Erreur lors de la récupération des infos du joueur", e);
+    }
+  };
+
+  useEffect(() => {
+    if (!searchedBattletag) return;
+
+    async function fetchStats() {
+      try {
+        const gamemode = "quickplay";
+        const heroQuery = selectedHero ? selectedHero.key : "all-heroes";
+        const resStats = await fetch(
+          `/api/player/${searchedBattletag}/stats?gamemode=${gamemode}&platform=console&hero=${heroQuery}`,
+        );
+        const dataStats = await resStats.json();
+        setPlayerStats(dataStats);
+      } catch (e) {
+        console.error(
+          "Erreur lors de la récupération des statistiques du joueur",
+          e,
+        );
+      }
+    }
+
+    fetchStats();
+  }, [searchedBattletag, selectedHero]);
 
   return (
     <div className="d-flex flex-column ">
-      {/* Barre de recherche (Fixe) */}
       <div className="d-flex mb-3 shadow-sm mt-2 panel-search flex-shrink-0">
         <input
           type="text"
           className="form-control border-theme-orange search-input-box"
           placeholder="Pseudo#0000"
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSearch();
+            }
+          }}
         />
-        <button className="bg-theme-orange search-submit-btn">
+        <button
+          className="bg-theme-orange search-submit-btn"
+          onClick={handleSearch}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
@@ -27,7 +95,6 @@ export default function LeftPanel() {
         </button>
       </div>
 
-      {/* Header Avatar (Fixe) */}
       <div className="mb-0 position-relative header-container flex-shrink-0">
         <div className="position-absolute top-0 start-0 bg-dark header-banner"></div>
         <div className="bg-white p-1 position-absolute header-avatar">
@@ -64,11 +131,17 @@ export default function LeftPanel() {
 
           {isHeroGridOpen && (
             <div className="hero-grid p-1 border rounded bg-white">
-              {Array.from({ length: 16 }).map((_, i) => (
-                <div key={i} className={`hero-item ${i === 0 ? "active" : ""}`}>
+              {heroes.map((hero, i) => (
+                <div
+                  key={hero.key}
+                  className={`hero-item ${hero.key === selectedHero?.key ? "active" : ""}`}
+                  onClick={() => setSelectedHero(hero)}
+                  style={{ cursor: "pointer" }}
+                  title={hero.name}
+                >
                   <img
-                    src="https://d15f34w2p8l1cc.cloudfront.net/overwatch/9240cd64cc8ef58df9acbf55204ab1b5d8578f743fda5931f0dbccbd75ab841b.png"
-                    alt="hero"
+                    src={hero.portrait}
+                    alt={hero.name}
                     className="w-100 h-100 object-fit-cover"
                   />
                 </div>
@@ -100,7 +173,13 @@ export default function LeftPanel() {
   );
 }
 
-const StatLine = ({ label, value }) => (
+const StatLine = ({
+  label,
+  value,
+}: {
+  label: string;
+  value: string | number;
+}) => (
   <div className="d-flex justify-content-between mb-1 border-bottom border-light pb-1">
     <span className="text-secondary fw-bold" style={{ fontSize: "0.75rem" }}>
       {label}
