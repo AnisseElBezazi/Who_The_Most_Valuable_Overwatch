@@ -6,29 +6,28 @@ export default function LeftPanel() {
   const [isHeroGridOpen, setIsHeroGridOpen] = useState(true);
 
   return (
-    <div className="d-flex flex-column h-100">
-      {/* Barre de recherche verrouillée */}
+    <div className="d-flex flex-column ">
+      {/* Barre de recherche (Fixe) */}
       <div className="d-flex mb-3 shadow-sm mt-2 panel-search flex-shrink-0">
-        <div className="d-flex align-items-center justify-content-center bg-theme-orange search-icon-box">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            className="text-dark"
-            viewBox="0 0 16 16"
-          >
-            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-          </svg>
-        </div>
         <input
           type="text"
-          className="form-control border-theme-orange border-start-0 search-input-box"
+          className="form-control border-theme-orange search-input-box"
           placeholder="Pseudo#0000"
         />
+        <button className="bg-theme-orange search-submit-btn">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="white"
+            viewBox="0 0 16 16"
+          >
+            <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l2.578 2.576L12.736 3.97z" />
+          </svg>
+        </button>
       </div>
 
-      {/* En-tête verrouillé */}
+      {/* Header Avatar (Fixe) */}
       <div className="mb-0 position-relative header-container flex-shrink-0">
         <div className="position-absolute top-0 start-0 bg-dark header-banner"></div>
         <div className="bg-white p-1 position-absolute header-avatar">
@@ -43,30 +42,33 @@ export default function LeftPanel() {
         </div>
       </div>
 
-      {/* Contenu principal qui s'étire */}
+      {/* Contenu qui s'étire */}
       <div className="bg-white d-flex flex-column pt-4 pb-3 shadow-sm flex-grow-1 main-content">
+        {/* Titre du héros */}
         <div className="mb-3 px-3 mt-2">
-          <div className="fw-bold text-uppercase text-dark lh-1 hero-title">
+          <div className="fw-bold text-uppercase text-dark lh-1 fs-2">
             CASSIDY
           </div>
-          <div className="fw-bold text-theme-orange hero-subtitle">Damage</div>
+          <div className="fw-bold text-theme-orange">Damage</div>
         </div>
 
-        <div className="px-3 mt-2 hero-grid-wrapper w-100">
+        {/* Grille de sélection */}
+        <div className="px-3 mt-2 w-100" style={{ maxWidth: "260px" }}>
           <button
             onClick={() => setIsHeroGridOpen(!isHeroGridOpen)}
-            className="btn w-100 d-flex justify-content-between align-items-center fw-bold mb-2 btn-hero-select"
+            className="btn w-100 d-flex justify-content-between align-items-center fw-bold mb-2 border rounded"
+            style={{ backgroundColor: "#d0d5d9", fontSize: "0.85rem" }}
           >
-            SELECT HERO{" "}
-            <span className="arrow-icon">{isHeroGridOpen ? "▲" : "▼"}</span>
+            SELECT HERO <span>{isHeroGridOpen ? "▲" : "▼"}</span>
           </button>
+
           {isHeroGridOpen && (
-            <div className="d-flex flex-wrap border rounded p-1 bg-white grid-gap">
-              {Array.from({ length: 12 }).map((_, i) => (
+            <div className="hero-grid p-1 border rounded bg-white">
+              {Array.from({ length: 16 }).map((_, i) => (
                 <div key={i} className={`hero-item ${i === 0 ? "active" : ""}`}>
                   <img
                     src="https://d15f34w2p8l1cc.cloudfront.net/overwatch/9240cd64cc8ef58df9acbf55204ab1b5d8578f743fda5931f0dbccbd75ab841b.png"
-                    alt={`hero-${i}`}
+                    alt="hero"
                     className="w-100 h-100 object-fit-cover"
                   />
                 </div>
@@ -75,43 +77,36 @@ export default function LeftPanel() {
           )}
         </div>
 
-        <div className="px-3 mt-4 mb-auto w-100 hero-grid-wrapper">
-          <div className="d-flex justify-content-between mb-1">
-            <span className="text-secondary fw-bold stat-text">
-              Deadeye Kills
-            </span>
-            <span className="fw-bold text-dark stat-text">1</span>
-          </div>
-          <div className="d-flex justify-content-between mb-1">
-            <span className="text-secondary fw-bold stat-text">
-              Fan the Hammer Kills
-            </span>
-            <span className="fw-bold text-dark stat-text">1</span>
-          </div>
-          <div className="d-flex justify-content-between mb-1">
-            <span className="text-secondary fw-bold stat-text">
-              Long Range Final Blows
-            </span>
-            <span className="fw-bold text-dark stat-text">2</span>
-          </div>
-          <div className="d-flex justify-content-between mb-1">
-            <span className="text-secondary fw-bold stat-text">
-              Mag Grenade Attach Rate
-            </span>
-            <span className="fw-bold text-dark stat-text">27%</span>
-          </div>
+        {/* Statistiques */}
+        <div className="px-3 mt-4 mb-auto w-100" style={{ maxWidth: "260px" }}>
+          <StatLine label="Deadeye Kills" value="1" />
+          <StatLine label="Fan the Hammer Kills" value="1" />
+          <StatLine label="Long Range Final Blows" value="2" />
+          <StatLine label="Mag Grenade Attach Rate" value="27%" />
         </div>
 
+        {/* Rank Section */}
         <div className="d-flex align-items-center px-3 mt-4">
           <div className="rounded-circle d-flex justify-content-center align-items-center fw-bold fs-3 me-3 text-dark rank-circle">
             88
           </div>
           <div>
-            <div className="fw-bold rank-label">Overall</div>
-            <div className="fw-bold fs-4 text-uppercase text-dark">MASTER</div>
+            <div className="fw-bold text-muted small">Overall</div>
+            <div className="fw-bold fs-4 text-dark">MASTER</div>
           </div>
         </div>
       </div>
     </div>
   );
 }
+
+const StatLine = ({ label, value }) => (
+  <div className="d-flex justify-content-between mb-1 border-bottom border-light pb-1">
+    <span className="text-secondary fw-bold" style={{ fontSize: "0.75rem" }}>
+      {label}
+    </span>
+    <span className="fw-bold text-dark" style={{ fontSize: "0.75rem" }}>
+      {value}
+    </span>
+  </div>
+);

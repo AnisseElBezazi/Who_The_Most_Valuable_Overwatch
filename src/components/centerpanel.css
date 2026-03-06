@@ -6,9 +6,21 @@
   box-shadow: 0px -5px 20px rgba(0, 0, 0, 0.15);
 }
 
+.stat-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  flex-grow: 1;
+}
+
+.stat-list-wrapper::-webkit-scrollbar {
+  display: none; 
+}
+
 .gamemode-text {
   font-size: 0.9rem;
 }
+
 .gamemode-icon {
   font-size: 0.7rem;
 }
@@ -20,7 +32,9 @@
   border-radius: 5px;
   background-color: white !important;
   transition: all 0.2s ease-in-out;
+  font-weight: bold;
 }
+
 .btn-update-stats:hover {
   background-color: #f09c13 !important;
   color: white !important;
@@ -34,14 +48,16 @@
   top: 140px;
   z-index: 20;
 }
+
 .vs-logo-img {
   height: 100px;
   object-fit: contain;
 }
 
 .match-header-wrapper {
-  margin-top: 180px;
+  margin-top: 180px; /* Espace pour le logo VS au-dessus */
 }
+
 .match-stats-title {
   font-size: 1.2rem;
   color: #cdd3d8 !important;
@@ -50,39 +66,46 @@
 .switch-text {
   font-size: 0.85rem;
 }
+
 .bg-console-orange {
   background-color: #f09c13 !important;
 }
+
 .switch-option {
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   border-radius: 4px;
 }
+
 .switch-option.active:hover {
   opacity: 0.85;
 }
+
 .switch-option.inactive {
   color: #6c757d;
 }
+
 .switch-option.inactive:hover {
   background-color: #e9ecef;
   color: #212529;
 }
+
 .switch-divider {
   height: 16px;
   border-left: 1px solid #dee2e6;
   margin: 0 4px;
 }
 
-.stat-list-wrapper {
-  gap: 15px;
-}
 .stat-val {
   width: 50px;
+  font-size: 0.95rem;
 }
+
 .stat-bar-wrapper {
   height: 8px;
+  background-color: #e9ecef; /* Fond de la barre */
 }
+
 .stat-label {
   width: 160px;
   font-size: 0.85rem;
@@ -91,9 +114,13 @@
 .text-orange-win {
   color: #f09c13 !important;
 }
+
 .bg-orange-win {
   background-color: #f09c13 !important;
+  height: 100%;
 }
+
 .bg-gray-lose {
   background-color: #cdd3d8 !important;
+  height: 100%;
 }

@@ -6,6 +6,5 @@ body {
   background: linear-gradient(to top right, #5d7298, #c9bcc7);
   height: 100vh;
   margin: 0;
-  overflow: hidden;
   background-attachment: fixed;
 }

@@ -5,7 +5,7 @@ import RightPanel from "@/components/rightpanel";
 export default function Page() {
   return (
     <div
-      className="d-flex justify-content-center align-items-center w-100 vh-100 overflow-hidden"
+      className="d-flex justify-content-center align-items-stretch w-100 min-vh-100"
       style={{ gap: "0px", padding: "2vh 2vw" }}
     >
       <LeftPanel />

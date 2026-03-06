@@ -1,106 +1,101 @@
-.panel-search-right {
-  width: 310px;
-}
-.bg-theme-gray {
-  background-color: #6c757d;
-}
-.text-theme-gray {
-  color: #6c757d;
-}
-.border-theme-gray {
-  border-color: #6c757d !important;
-}
+.panel-search-right { width: 310px; }
+.bg-theme-gray { background-color: #6c757d; }
+.text-theme-gray { color: #6c757d; }
+.border-theme-gray { border-color: #6c757d !important; }
 
-.search-icon-box-right {
-  width: 40px;
-  border-radius: 5px 0 0 5px;
-}
 .search-input-box-right {
   background-color: #e9ecef;
   border-width: 2px;
-  border-radius: 0 5px 5px 0;
+  border-radius: 5px 0 0 5px;
   outline: none;
   box-shadow: none;
 }
-.search-input-box-right:focus {
-  background-color: #e9ecef;
-  border-color: #6c757d;
-  box-shadow: none;
+
+.search-submit-btn-right {
+  width: 45px;
+  border: 2px solid #6c757d;
+  border-left: none;
+  border-radius: 0 5px 5px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
-.header-container-right {
-  height: 150px;
+/* Zone de scroll autonome avec barre à GAUCHE */
+.main-content-right {
   width: 350px;
-  z-index: 20;
+ flex-grow: 1;
+  overflow-x: hidden;
 }
+
+/* Remet le contenu en sens normal (LTR) mais aligné à droite */
+.main-content-inner-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.main-content-right::-webkit-scrollbar { width: 6px; }
+.main-content-right::-webkit-scrollbar-track { background: #f1f1f1; }
+.main-content-right::-webkit-scrollbar-thumb {
+  background: #6c757d;
+  border-radius: 10px;
+}
+
+/* Grille de sélection - Alignée à droite */
+.hero-grid-right {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: flex-end;
+}
+
+.hero-item-right {
+  width: calc(25% - 3px); 
+  aspect-ratio: 1/1;
+  /* Pas de scaleX ici pour l'inversion visuelle */
+  border: 1px solid #dee2e6;
+  background-color: #f8f9fa;
+  cursor: pointer;
+}
+
+.hero-item-right.active {
+  border: 2px solid #6c757d;
+  background-color: rgba(108, 117, 125, 0.1);
+}
+
+/* Header - Miroir du panel gauche */
+.header-container-right { height: 150px; width: 350px; z-index: 20; }
 .header-banner-right {
   width: 410px;
   height: 150px;
   background-size: cover;
   background-position: center;
-  border-right: 6px solid #6c757d;
+  /* Image non inversée ici pour l'effet miroir */
+  border-right: 6px solid #6c757d; 
   z-index: 1;
   background-image: url("https://blz-contentstack-images.akamaized.net/v3/assets/blt2477dcaf4ebd440c/blt76ab9c7b4d291756/631a8bab636d390da7825df5/2600_Ana.jpg");
 }
+
 .header-avatar-right {
-  width: 100px;
-  height: 100px;
-  border: 3px solid #6c757d;
-  right: 370px;
+  width: 100px; height: 100px;
+  border: 5px solid #6c757d;
+  right: 370px; /* Positionné à droite */
   top: 25px;
   z-index: 2;
 }
+
 .header-pseudo-right {
   z-index: 2;
+  top: 50%;
+  transform: translateY(-50%);
   right: 490px;
+  text-align: right;
 }
 
-.main-content-right {
-  width: 350px;
-}
-.hero-title-right {
-  font-size: 2rem;
-}
-.hero-subtitle-right {
-  font-size: 1rem;
-}
-
-.hero-grid-wrapper-right {
-  max-width: 240px;
-}
-.btn-hero-select-right {
-  background-color: #d0d5d9;
-  color: #333;
-  border: 1px solid #a8abb4;
-  border-radius: 5px;
-}
-.btn-hero-select-right:hover {
-  background-color: #c4c9cd;
-}
-.arrow-icon-right {
-  font-size: 0.8rem;
-}
-.grid-gap-right {
-  gap: 2px;
-}
-.hero-item-right {
-  width: calc(25% - 1.5px);
-  aspect-ratio: 1/1;
-  border: 1px solid #dee2e6;
-}
-.hero-item-right.active {
-  border: 2px solid #6c757d;
-}
-
-.stat-text-right {
-  font-size: 0.85rem;
-}
 .rank-circle-right {
-  width: 80px;
-  height: 80px;
+  width: 80px; height: 80px;
   border: 4px solid #6c757d;
-}
-.rank-label-right {
-  font-size: 0.9rem;
-  color: #cdd3d8;
 }
