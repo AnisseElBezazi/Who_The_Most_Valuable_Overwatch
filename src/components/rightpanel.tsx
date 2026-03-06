@@ -7,7 +7,8 @@ export default function RightPanel() {
 
   return (
     <div className="d-flex flex-column h-100 align-items-end">
-      <div className="d-flex mb-3 shadow-sm mt-2 panel-search-right">
+      {/* Barre de recherche verrouillée */}
+      <div className="d-flex mb-3 shadow-sm mt-2 panel-search-right flex-shrink-0">
         <div className="d-flex align-items-center justify-content-center bg-theme-gray search-icon-box-right">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -27,7 +28,8 @@ export default function RightPanel() {
         />
       </div>
 
-      <div className="mb-0 position-relative header-container-right">
+      {/* En-tête verrouillé */}
+      <div className="mb-0 position-relative header-container-right flex-shrink-0">
         <div className="position-absolute top-0 end-0 bg-dark header-banner-right"></div>
 
         <div className="bg-white p-1 position-absolute header-avatar-right">
@@ -43,7 +45,8 @@ export default function RightPanel() {
         </div>
       </div>
 
-      <div className="bg-white d-flex flex-column align-items-end pt-4 pb-3 shadow-sm flex-grow-1 main-content-right">
+      {/* Contenu principal verrouillé */}
+      <div className="bg-white d-flex flex-column align-items-end pt-4 pb-3 shadow-sm flex-grow-1 main-content-right flex-shrink-0">
         <div className="mb-3 px-3 mt-2 text-end">
           <div className="fw-bold text-uppercase text-dark lh-1 hero-title-right">
             ANA

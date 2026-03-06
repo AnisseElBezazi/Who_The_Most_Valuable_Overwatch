@@ -7,7 +7,8 @@ export default function LeftPanel() {
 
   return (
     <div className="d-flex flex-column h-100">
-      <div className="d-flex mb-3 shadow-sm mt-2 panel-search">
+      {/* Barre de recherche verrouillée */}
+      <div className="d-flex mb-3 shadow-sm mt-2 panel-search flex-shrink-0">
         <div className="d-flex align-items-center justify-content-center bg-theme-orange search-icon-box">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -27,9 +28,9 @@ export default function LeftPanel() {
         />
       </div>
 
-      <div className="mb-0 position-relative header-container">
+      {/* En-tête verrouillé */}
+      <div className="mb-0 position-relative header-container flex-shrink-0">
         <div className="position-absolute top-0 start-0 bg-dark header-banner"></div>
-
         <div className="bg-white p-1 position-absolute header-avatar">
           <img
             src="https://clipartcraft.com/images/overwatch-logo-transparent-high-resolution-4.png"
@@ -37,12 +38,12 @@ export default function LeftPanel() {
             className="w-100 h-100 object-fit-cover"
           />
         </div>
-
         <div className="fw-bold fs-3 text-dark text-nowrap position-absolute top-50 translate-middle-y header-pseudo">
           Raysquad
         </div>
       </div>
 
+      {/* Contenu principal qui s'étire */}
       <div className="bg-white d-flex flex-column pt-4 pb-3 shadow-sm flex-grow-1 main-content">
         <div className="mb-3 px-3 mt-2">
           <div className="fw-bold text-uppercase text-dark lh-1 hero-title">
@@ -56,10 +57,9 @@ export default function LeftPanel() {
             onClick={() => setIsHeroGridOpen(!isHeroGridOpen)}
             className="btn w-100 d-flex justify-content-between align-items-center fw-bold mb-2 btn-hero-select"
           >
-            SELECT HERO
+            SELECT HERO{" "}
             <span className="arrow-icon">{isHeroGridOpen ? "▲" : "▼"}</span>
           </button>
-
           {isHeroGridOpen && (
             <div className="d-flex flex-wrap border rounded p-1 bg-white grid-gap">
               {Array.from({ length: 12 }).map((_, i) => (
