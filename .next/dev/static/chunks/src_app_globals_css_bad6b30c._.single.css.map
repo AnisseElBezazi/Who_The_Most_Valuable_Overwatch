@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/src/app/globals.css"],"sourcesContent":["* {\r\n  box-sizing: border-box;\r\n}\r\n\r\nbody {\r\n  background: linear-gradient(to top right, #5d7298, #c9bcc7);\r\n  height: 100vh;\r\n  margin: 0;\r\n  overflow: hidden;\r\n  background-attachment: fixed;\r\n}\r\n"],"names":[],"mappings":"AAAA;;;;AAIA"}}]
+}

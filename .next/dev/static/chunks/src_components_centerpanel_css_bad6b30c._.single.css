@@ -1,0 +1,117 @@
+/* [project]/src/components/centerpanel.css [app-client] (css) */
+.center-panel-wrapper {
+  z-index: 10;
+  border-radius: 20px 20px 0 0;
+  flex-grow: 1;
+  min-width: 500px;
+  box-shadow: 0 -5px 20px #00000026;
+}
+
+.gamemode-text {
+  font-size: .9rem;
+}
+
+.gamemode-icon {
+  font-size: .7rem;
+}
+
+.btn-update-stats {
+  border-radius: 5px;
+  padding: 5px 20px;
+  transition: all .2s ease-in-out;
+  color: #333 !important;
+  background-color: #fff !important;
+  border: 2px solid #f09c13 !important;
+}
+
+.btn-update-stats:hover {
+  color: #fff !important;
+  background-color: #f09c13 !important;
+}
+
+.spacer-80 {
+  width: 80px;
+}
+
+.vs-logo-wrapper {
+  z-index: 20;
+  top: 140px;
+}
+
+.vs-logo-img {
+  object-fit: contain;
+  height: 100px;
+}
+
+.match-header-wrapper {
+  margin-top: 180px;
+}
+
+.match-stats-title {
+  font-size: 1.2rem;
+  color: #cdd3d8 !important;
+}
+
+.switch-text {
+  font-size: .85rem;
+}
+
+.bg-console-orange {
+  background-color: #f09c13 !important;
+}
+
+.switch-option {
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all .2s ease-in-out;
+}
+
+.switch-option.active:hover {
+  opacity: .85;
+}
+
+.switch-option.inactive {
+  color: #6c757d;
+}
+
+.switch-option.inactive:hover {
+  color: #212529;
+  background-color: #e9ecef;
+}
+
+.switch-divider {
+  border-left: 1px solid #dee2e6;
+  height: 16px;
+  margin: 0 4px;
+}
+
+.stat-list-wrapper {
+  gap: 15px;
+}
+
+.stat-val {
+  width: 50px;
+}
+
+.stat-bar-wrapper {
+  height: 8px;
+}
+
+.stat-label {
+  width: 160px;
+  font-size: .85rem;
+}
+
+.text-orange-win {
+  color: #f09c13 !important;
+}
+
+.bg-orange-win {
+  background-color: #f09c13 !important;
+}
+
+.bg-gray-lose {
+  background-color: #cdd3d8 !important;
+}
+
+/*# sourceMappingURL=src_components_centerpanel_css_bad6b30c._.single.css.map*/
