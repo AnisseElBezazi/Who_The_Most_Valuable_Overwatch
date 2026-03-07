@@ -14,7 +14,6 @@ export async function GET(
       );
     }
 
-    // Appel à notre service qui s'occupe de récupérer DÉFINITIVEMENT les stats du joueur
     const playerData = await fetchPlayerStats(battletag);
 
     return NextResponse.json(playerData, { status: 200 });

@@ -1,35 +1,41 @@
-.panel-search-right { width: 310px; }
-.bg-theme-gray { background-color: #6c757d; }
-.text-theme-gray { color: #6c757d; }
-.border-theme-gray { border-color: #6c757d !important; }
-
-.search-input-box-right {
-  background-color: #e9ecef;
-  border-width: 2px;
-  border-radius: 5px 0 0 5px;
-  outline: none;
-  box-shadow: none;
+.panel-search-right {
+  width: 310px;
+}
+.bg-theme-gray {
+  background-color: #6c757d;
+}
+.text-theme-gray {
+  color: #6c757d;
+}
+.border-theme-gray {
+  border-color: #6c757d !important;
 }
 
 .search-submit-btn-right {
   width: 45px;
   border: 2px solid #6c757d;
-  border-left: none;
-  border-radius: 0 5px 5px 0;
+  border-right: none;
+  border-radius: 5px 0 0 5px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
 }
 
-/* Zone de scroll autonome avec barre à GAUCHE */
+.search-input-box-right {
+  background-color: #e9ecef;
+  border-width: 2px;
+  border-radius: 0 5px 5px 0;
+  outline: none;
+  box-shadow: none;
+}
+
 .main-content-right {
   width: 350px;
- flex-grow: 1;
+  flex-grow: 1;
   overflow-x: hidden;
 }
 
-/* Remet le contenu en sens normal (LTR) mais aligné à droite */
 .main-content-inner-right {
   display: flex;
   flex-direction: column;
@@ -37,25 +43,28 @@
   width: 100%;
 }
 
-.main-content-right::-webkit-scrollbar { width: 6px; }
-.main-content-right::-webkit-scrollbar-track { background: #f1f1f1; }
+.main-content-right::-webkit-scrollbar {
+  width: 6px;
+}
+.main-content-right::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
 .main-content-right::-webkit-scrollbar-thumb {
   background: #6c757d;
   border-radius: 10px;
 }
 
-/* Grille de sélection - Alignée à droite */
 .hero-grid-right {
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
   justify-content: flex-end;
+  max-height: 200px;
 }
 
 .hero-item-right {
-  width: calc(25% - 3px); 
+  width: calc(25% - 3px);
   aspect-ratio: 1/1;
-  /* Pas de scaleX ici pour l'inversion visuelle */
   border: 1px solid #dee2e6;
   background-color: #f8f9fa;
   cursor: pointer;
@@ -66,23 +75,25 @@
   background-color: rgba(108, 117, 125, 0.1);
 }
 
-/* Header - Miroir du panel gauche */
-.header-container-right { height: 150px; width: 350px; z-index: 20; }
+.header-container-right {
+  height: 150px;
+  width: 350px;
+  z-index: 20;
+}
 .header-banner-right {
   width: 410px;
   height: 150px;
   background-size: cover;
-  background-position: center;
-  /* Image non inversée ici pour l'effet miroir */
-  border-right: 6px solid #6c757d; 
+  background-position: center 20%;
+  border-right: 6px solid #6c757d;
   z-index: 1;
-  background-image: url("https://blz-contentstack-images.akamaized.net/v3/assets/blt2477dcaf4ebd440c/blt76ab9c7b4d291756/631a8bab636d390da7825df5/2600_Ana.jpg");
 }
 
 .header-avatar-right {
-  width: 100px; height: 100px;
+  width: 100px;
+  height: 100px;
   border: 5px solid #6c757d;
-  right: 370px; /* Positionné à droite */
+  right: 370px;
   top: 25px;
   z-index: 2;
 }
@@ -96,6 +107,31 @@
 }
 
 .rank-circle-right {
-  width: 80px; height: 80px;
+  width: 80px;
+  height: 80px;
   border: 4px solid #6c757d;
+}
+
+.search-input-box-right:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: inherit !important;
+}
+
+.max-w-260 {
+  max-width: 260px;
+}
+
+.select-hero-btn {
+  background-color: #d0d5d9;
+  font-size: 0.85rem;
+}
+
+.rank-icon-right {
+  width: 40px;
+  height: 40px;
+}
+
+.fs-small-custom {
+  font-size: 0.75rem;
 }
