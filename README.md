@@ -15,10 +15,12 @@ Site Web de comparaison de statistiques pour Overwatch. Permet d'analyser et de 
 ## Installation
 
 1. Cloner le dépôt
+   
 git clone https://github.com/AnisseElBezazi/Who_The_Most_Valuable_Overwatch/
+
 cd Who_The_Most_Valuable_Overwatch
 
-2. Installer les dépendances
+3. Installer les dépendances
 npm install
 (si erreur lié à bootstrap)
 npm install bootstrap
@@ -33,6 +35,15 @@ Menu > Options > Social > Visibilité du profil > Public
 
 Note : L'actualisation des données par Blizzard sur ses serveurs web peut prendre plusieurs heures ou jours.
 
-## API
+## Maquette Figma
+
+<img width="1919" height="1025" alt="Capture d&#39;écran 2026-03-08 211829" src="https://github.com/user-attachments/assets/6a37d24d-2846-4f5a-9dcd-7e6b9e59bc3a" />
+
+
+## API & CREDIT
 
 Données récupérées via l'API Overfast (scraping des profils officiels Blizzard).
+
+Anisse El Bezazi & Quentin Deglas
+
+
