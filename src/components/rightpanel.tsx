@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import "./rightpanel.css";
+import { calculatePlayerScore } from "@/algo/scoring";
 
 export default function RightPanel({ logic }: { logic: any }) {
   const {
@@ -19,8 +20,14 @@ export default function RightPanel({ logic }: { logic: any }) {
     rankIcon,
   } = logic;
 
+  // Calcul du score dynamique pour le joueur de droite
+  const score = calculatePlayerScore(
+    playerStats?.[selectedHero?.key],
+    selectedHero,
+  );
+
   return (
-    <div className="d-flex flex-column align-items-end">
+    <div className="d-flex flex-column align-items-end h-100">
       <div className="d-flex mb-3 shadow-sm mt-2 panel-search-right flex-shrink-0">
         <button
           className="bg-theme-gray search-submit-btn-right"
@@ -51,6 +58,8 @@ export default function RightPanel({ logic }: { logic: any }) {
           className="position-absolute top-0 end-0 header-banner-right"
           style={{
             backgroundImage: `url(${selectedHero?.backgrounds?.[2]?.url || selectedHero?.portrait || ""})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center 20%",
           }}
         ></div>
         <div className="bg-white p-1 position-absolute header-avatar-right overflow-hidden">
@@ -68,9 +77,9 @@ export default function RightPanel({ logic }: { logic: any }) {
         </div>
       </div>
 
-      <div className="bg-white d-flex flex-column pt-4 pb-3 shadow-sm flex-grow-1 main-content-right">
-        <div className="main-content-inner-right flex-grow-1 d-flex flex-column">
-          <div className="mb-3 px-3 mt-2 text-end">
+      <div className="bg-white d-flex flex-column pt-4 pb-3 shadow-sm flex-grow-1 main-content-right overflow-hidden">
+        <div className="main-content-inner-right flex-grow-1 d-flex flex-column overflow-hidden">
+          <div className="mb-3 px-3 mt-2 text-end flex-shrink-0">
             <div className="fw-bold text-uppercase text-dark lh-1 fs-2">
               {selectedHero?.name || "ANA"}
             </div>
@@ -81,7 +90,7 @@ export default function RightPanel({ logic }: { logic: any }) {
             </div>
           </div>
 
-          <div className="px-3 mt-2 w-100 ms-auto max-w-260 position-relative">
+          <div className="px-3 mt-2 w-100 ms-auto max-w-260 position-relative flex-shrink-0">
             <button
               onClick={() => setIsHeroGridOpen(!isHeroGridOpen)}
               className="btn w-100 d-flex justify-content-between align-items-center fw-bold mb-2 border rounded select-hero-btn"
@@ -122,7 +131,7 @@ export default function RightPanel({ logic }: { logic: any }) {
             )}
           </div>
 
-          <div className="px-3 mt-4 mb-auto w-100 ms-auto max-w-260">
+          <div className="px-3 mt-4 mb-auto w-100 ms-auto max-w-260 overflow-auto">
             {playerStats &&
             selectedHero &&
             playerStats[selectedHero.key]?.hero_specific ? (
@@ -146,9 +155,14 @@ export default function RightPanel({ logic }: { logic: any }) {
             )}
           </div>
 
-          <div className="d-flex align-items-center px-3 mt-4 justify-content-end w-100">
+          <div className="d-flex align-items-center px-3 mt-4 justify-content-end w-100 flex-shrink-0">
             {rankIcon && (
-              <img src={rankIcon} alt="Rank" className="rank-icon-right me-2" />
+              <img
+                src={rankIcon}
+                alt="Rank"
+                className="rank-icon-right me-2"
+                style={{ width: "40px", height: "40px" }}
+              />
             )}
             <div className="text-end me-3">
               <div className="fw-bold text-muted small text-uppercase">
@@ -162,8 +176,11 @@ export default function RightPanel({ logic }: { logic: any }) {
                   : rankDivision}
               </div>
             </div>
-            <div className="rounded-circle border border-3 border-dark d-flex justify-content-center align-items-center fw-bold fs-3 text-dark rank-circle-right">
-              0
+            <div
+              className="rounded-circle border border-3 border-dark d-flex justify-content-center align-items-center fw-bold fs-3 text-dark rank-circle-right flex-shrink-0"
+              style={{ width: "80px", height: "80px" }}
+            >
+              {score || 0}
             </div>
           </div>
         </div>
@@ -180,7 +197,17 @@ const StatLine = ({
   value: string | number;
 }) => (
   <div className="d-flex justify-content-between mb-1 border-bottom border-light pb-1 w-100">
-    <span className="text-secondary fw-bold fs-small-custom">{label}</span>
-    <span className="fw-bold text-dark fs-small-custom">{value}</span>
+    <span
+      className="text-secondary fw-bold fs-small-custom"
+      style={{ fontSize: "0.75rem" }}
+    >
+      {label}
+    </span>
+    <span
+      className="fw-bold text-dark fs-small-custom"
+      style={{ fontSize: "0.75rem" }}
+    >
+      {value}
+    </span>
   </div>
 );

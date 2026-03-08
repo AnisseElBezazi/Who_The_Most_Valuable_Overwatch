@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import "./leftpanel.css";
+import { calculatePlayerScore } from "@/algo/scoring";
 
 export default function LeftPanel({ logic }: { logic: any }) {
   const {
@@ -19,8 +20,14 @@ export default function LeftPanel({ logic }: { logic: any }) {
     rankIcon,
   } = logic;
 
+  // Calcul du score dynamique basé sur l'algorithme par rôle
+  const score = calculatePlayerScore(
+    playerStats?.[selectedHero?.key],
+    selectedHero,
+  );
+
   return (
-    <div className="d-flex flex-column">
+    <div className="d-flex flex-column h-100">
       <div
         className="d-flex mb-3 shadow-sm mt-2 flex-shrink-0"
         style={{
@@ -83,8 +90,8 @@ export default function LeftPanel({ logic }: { logic: any }) {
         </div>
       </div>
 
-      <div className="bg-white d-flex flex-column pt-4 pb-3 shadow-sm flex-grow-1 main-content">
-        <div className="mb-3 px-3 mt-2">
+      <div className="bg-white d-flex flex-column pt-4 pb-3 shadow-sm flex-grow-1 main-content overflow-hidden">
+        <div className="mb-3 px-3 mt-2 flex-shrink-0">
           <div className="fw-bold text-uppercase text-dark lh-1 fs-2">
             {selectedHero?.name || "CASSIDY"}
           </div>
@@ -96,7 +103,7 @@ export default function LeftPanel({ logic }: { logic: any }) {
         </div>
 
         <div
-          className="px-3 mt-2 w-100 select-hero-container position-relative"
+          className="px-3 mt-2 w-100 select-hero-container position-relative flex-shrink-0"
           style={{ maxWidth: "260px" }}
         >
           <button
@@ -141,7 +148,7 @@ export default function LeftPanel({ logic }: { logic: any }) {
         </div>
 
         <div
-          className="px-3 mt-4 mb-auto w-100 stats-container"
+          className="px-3 mt-4 mb-auto w-100 stats-container overflow-auto"
           style={{ maxWidth: "260px" }}
         >
           {playerStats &&
@@ -167,12 +174,12 @@ export default function LeftPanel({ logic }: { logic: any }) {
           )}
         </div>
 
-        <div className="d-flex align-items-center px-3 mt-4 w-100">
+        <div className="d-flex align-items-center px-3 mt-4 w-100 flex-shrink-0">
           <div
             className="rounded-circle border border-3 border-warning d-flex justify-content-center align-items-center fw-bold fs-3 me-3 text-dark rank-circle flex-shrink-0"
             style={{ width: "80px", height: "80px" }}
           >
-            0
+            {score || 0}
           </div>
           <div className="me-3">
             <div className="fw-bold text-muted small text-uppercase">
