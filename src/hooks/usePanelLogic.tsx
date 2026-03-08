@@ -24,7 +24,7 @@ export function usePanelLogic(
           data.find((h: any) => h.key === defaultHeroKey) || data[0];
         fetchHeroDetails(defaultHero.key);
       } catch (e) {
-        console.error("Failed to fetch heroes", e);
+        console.error("Erreur héros", e);
       }
     }
     fetchHeroes();
@@ -38,21 +38,26 @@ export function usePanelLogic(
       const fullHeroData = await res.json();
       setSelectedHero({ ...fullHeroData, key: heroKey });
     } catch (e) {
-      console.error("Erreur détails héros", e);
+      console.error("Erreur détails", e);
     }
   }
 
   const handleSearch = async (tag?: string) => {
-    const targetTag = tag || searchInput.replace("#", "-");
-    if (!targetTag) return;
+    // On force l'utilisation d'une string. Si tag est un event, on prend searchInput.
+    const tagToUse = typeof tag === "string" ? tag : searchInput;
+    if (!tagToUse || tagToUse.includes("[object")) return;
 
-    setSearchedBattletag(targetTag);
+    const formatted = tagToUse.replace("#", "-");
+    setSearchedBattletag(formatted);
+
     try {
-      const resPlayer = await fetch(`/api/player/${targetTag}/info`);
-      const data = await resPlayer.json();
-      setPlayerData(data);
+      const resPlayer = await fetch(`/api/player/${formatted}/info`);
+      if (resPlayer.ok) {
+        const data = await resPlayer.json();
+        setPlayerData(data);
+      }
     } catch (e) {
-      console.error("Erreur joueur", e);
+      console.error("Erreur recherche", e);
     }
   };
 
@@ -80,10 +85,15 @@ export function usePanelLogic(
 
   const refresh = () => {
     if (searchedBattletag) {
-      handleSearch(searchedBattletag);
+      handleSearch(searchedBattletag.replace("-", "#"));
       setRefreshTrigger((prev) => prev + 1);
     }
   };
+
+  const roleKey =
+    typeof selectedHero?.role === "string"
+      ? selectedHero.role.toLowerCase()
+      : selectedHero?.role?.key?.toLowerCase() || "overall";
 
   return {
     isHeroGridOpen,
@@ -99,15 +109,11 @@ export function usePanelLogic(
     refresh,
     rankDivision:
       playerData?.summary?.competitive?.[platform]?.[
-        selectedHero?.role?.toLowerCase()
+        roleKey
       ]?.division?.toUpperCase() || "UNRANKED",
     rankTier:
-      playerData?.summary?.competitive?.[platform]?.[
-        selectedHero?.role?.toLowerCase()
-      ]?.tier || "",
+      playerData?.summary?.competitive?.[platform]?.[roleKey]?.tier || "",
     rankIcon:
-      playerData?.summary?.competitive?.[platform]?.[
-        selectedHero?.role?.toLowerCase()
-      ]?.rank_icon || "",
+      playerData?.summary?.competitive?.[platform]?.[roleKey]?.rank_icon || "",
   };
 }

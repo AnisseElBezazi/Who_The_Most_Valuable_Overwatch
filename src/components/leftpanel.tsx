@@ -20,7 +20,6 @@ export default function LeftPanel({ logic }: { logic: any }) {
     rankIcon,
   } = logic;
 
-  // Calcul du score dynamique basé sur l'algorithme par rôle
   const score = calculatePlayerScore(
     playerStats?.[selectedHero?.key],
     selectedHero,

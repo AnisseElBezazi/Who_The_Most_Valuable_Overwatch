@@ -20,7 +20,6 @@ export default function RightPanel({ logic }: { logic: any }) {
     rankIcon,
   } = logic;
 
-  // Calcul du score dynamique pour le joueur de droite
   const score = calculatePlayerScore(
     playerStats?.[selectedHero?.key],
     selectedHero,

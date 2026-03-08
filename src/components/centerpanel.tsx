@@ -87,7 +87,7 @@ export default function CenterPanel({
         <img src="/logo_vs.png" alt="VS" style={{ width: "80px" }} />
       </div>
 
-      <div className="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2 mt-5">
+      <div className="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2 mt-3">
         <div className="d-flex align-items-center">
           <div
             className={`px-3 py-1 fw-bold switch-option ${leftPlatform === "console" ? "bg-console-orange text-dark rounded" : "text-secondary"}`}
