@@ -1,9 +1,8 @@
 "use client";
 import React from "react";
-import { usePanelLogic } from "@/hooks/usePanelLogic";
 import "./rightpanel.css";
 
-export default function RightPanel() {
+export default function RightPanel({ logic }: { logic: any }) {
   const {
     isHeroGridOpen,
     setIsHeroGridOpen,
@@ -18,7 +17,7 @@ export default function RightPanel() {
     rankDivision,
     rankTier,
     rankIcon,
-  } = usePanelLogic("ana");
+  } = logic;
 
   return (
     <div className="d-flex flex-column align-items-end">
@@ -82,7 +81,7 @@ export default function RightPanel() {
             </div>
           </div>
 
-          <div className="px-3 mt-2 w-100 ms-auto max-w-260">
+          <div className="px-3 mt-2 w-100 ms-auto max-w-260 position-relative">
             <button
               onClick={() => setIsHeroGridOpen(!isHeroGridOpen)}
               className="btn w-100 d-flex justify-content-between align-items-center fw-bold mb-2 border rounded select-hero-btn"
@@ -91,7 +90,17 @@ export default function RightPanel() {
             </button>
 
             {isHeroGridOpen && (
-              <div className="hero-grid-right p-1 border rounded bg-white overflow-auto">
+              <div
+                className="hero-grid-right p-1 border rounded bg-white overflow-auto shadow"
+                style={{
+                  maxHeight: "200px",
+                  position: "absolute",
+                  top: "100%",
+                  left: "15px",
+                  right: "15px",
+                  zIndex: 10,
+                }}
+              >
                 {heroes.map((hero) => (
                   <div
                     key={hero.key}
@@ -100,6 +109,7 @@ export default function RightPanel() {
                       fetchHeroDetails(hero.key);
                       setIsHeroGridOpen(false);
                     }}
+                    style={{ cursor: "pointer" }}
                   >
                     <img
                       src={hero.portrait}
@@ -113,28 +123,25 @@ export default function RightPanel() {
           </div>
 
           <div className="px-3 mt-4 mb-auto w-100 ms-auto max-w-260">
-            {playerStats ? (
-              <>
-                <StatLine
-                  label="Eliminations"
-                  value={playerStats.general?.eliminations || 0}
-                />
-                <StatLine
-                  label="Deaths"
-                  value={playerStats.general?.deaths || 0}
-                />
-                <StatLine
-                  label="Win Rate"
-                  value={`${playerStats.general?.win_rate || 0}%`}
-                />
-                <StatLine
-                  label="Avg Damage"
-                  value={playerStats.general?.damage_dealt || 0}
-                />
-              </>
+            {playerStats &&
+            selectedHero &&
+            playerStats[selectedHero.key]?.hero_specific ? (
+              Object.entries(playerStats[selectedHero.key].hero_specific)
+                .filter(
+                  ([key]) =>
+                    !key.includes("_most_in_game") &&
+                    !key.includes("_avg_per_10_min"),
+                )
+                .map(([key, value]) => (
+                  <StatLine
+                    key={key}
+                    label={key.replace(/_/g, " ").toUpperCase()}
+                    value={value as number}
+                  />
+                ))
             ) : (
               <div className="text-muted small text-end py-3">
-                Aucune donnée
+                Aucune donnée spécifique
               </div>
             )}
           </div>

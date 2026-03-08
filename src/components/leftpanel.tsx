@@ -1,9 +1,8 @@
 "use client";
 import React from "react";
-import { usePanelLogic } from "@/hooks/usePanelLogic";
 import "./leftpanel.css";
 
-export default function LeftPanel() {
+export default function LeftPanel({ logic }: { logic: any }) {
   const {
     isHeroGridOpen,
     setIsHeroGridOpen,
@@ -18,7 +17,7 @@ export default function LeftPanel() {
     rankDivision,
     rankTier,
     rankIcon,
-  } = usePanelLogic("cassidy");
+  } = logic;
 
   return (
     <div className="d-flex flex-column">
@@ -97,7 +96,7 @@ export default function LeftPanel() {
         </div>
 
         <div
-          className="px-3 mt-2 w-100 select-hero-container"
+          className="px-3 mt-2 w-100 select-hero-container position-relative"
           style={{ maxWidth: "260px" }}
         >
           <button
@@ -110,8 +109,15 @@ export default function LeftPanel() {
 
           {isHeroGridOpen && (
             <div
-              className="hero-grid p-1 border rounded bg-white overflow-auto"
-              style={{ maxHeight: "200px" }}
+              className="hero-grid p-1 border rounded bg-white overflow-auto shadow"
+              style={{
+                maxHeight: "200px",
+                position: "absolute",
+                top: "100%",
+                left: "15px",
+                right: "15px",
+                zIndex: 10,
+              }}
             >
               {heroes.map((hero) => (
                 <div
@@ -138,28 +144,25 @@ export default function LeftPanel() {
           className="px-3 mt-4 mb-auto w-100 stats-container"
           style={{ maxWidth: "260px" }}
         >
-          {playerStats ? (
-            <>
-              <StatLine
-                label="Eliminations"
-                value={playerStats.general?.eliminations || 0}
-              />
-              <StatLine
-                label="Deaths"
-                value={playerStats.general?.deaths || 0}
-              />
-              <StatLine
-                label="Win Rate"
-                value={`${playerStats.general?.win_rate || 0}%`}
-              />
-              <StatLine
-                label="Avg Damage"
-                value={playerStats.general?.damage_dealt || 0}
-              />
-            </>
+          {playerStats &&
+          selectedHero &&
+          playerStats[selectedHero.key]?.hero_specific ? (
+            Object.entries(playerStats[selectedHero.key].hero_specific)
+              .filter(
+                ([key]) =>
+                  !key.includes("_most_in_game") &&
+                  !key.includes("_avg_per_10_min"),
+              )
+              .map(([key, value]) => (
+                <StatLine
+                  key={key}
+                  label={key.replace(/_/g, " ").toUpperCase()}
+                  value={value as number}
+                />
+              ))
           ) : (
             <div className="text-muted small text-center py-3">
-              Aucune donnée
+              Aucune donnée spécifique
             </div>
           )}
         </div>
