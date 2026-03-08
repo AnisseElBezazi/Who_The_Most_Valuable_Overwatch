@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# WHO THE MOST VALUABLE
 
-## Getting Started
+Site Web de comparaison de statistiques pour Overwatch. Permet d'analyser et de comparer les performances de deux joueurs en temps réel sur une interface à trois panneaux.
 
-First, run the development server:
+<img width="1919" height="1026" alt="image" src="https://github.com/user-attachments/assets/7d84ce7c-f24c-4f90-b72b-b45fcd6346ca" />
 
-```bash
+## Fonctionnalités
+
+* **Analyse Battletags** : Comparaison simultanée de deux Battletags.
+* **Sélection de Héros** : Grilles interactives avec portraits officiels pour filtrer par personnage.
+* **Système de Scoring** : Algorithme calculant la valeur réelle du joueur selon le rôle et le héros choisi.
+* **Gestion Multi-Plateforme** : Switch indépendant PC / Console pour chaque joueur.
+* **Alertes & guide** : Système de détection de profil privé avec instructions de déblocage intégrées.
+
+## Installation
+
+1. Cloner le dépôt
+git clone https://github.com/AnisseElBezazi/Who_The_Most_Valuable_Overwatch/
+cd Who_The_Most_Valuable_Overwatch
+
+2. Installer les dépendances
+npm install
+(si erreur lié à bootstrap)
+npm install bootstrap
+
+4. Lancer le serveur
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Configuration Requise (En Jeu)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Pour que l'application puisse lire les statistiques, le profil doit être configuré en Public dans les options d'Overwatch :
+Menu > Options > Social > Visibilité du profil > Public
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Note : L'actualisation des données par Blizzard sur ses serveurs web peut prendre plusieurs heures ou jours.
 
-## Learn More
+## API
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Données récupérées via l'API Overfast (scraping des profils officiels Blizzard).
