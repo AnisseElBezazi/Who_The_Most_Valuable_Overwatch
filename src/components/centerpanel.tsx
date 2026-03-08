@@ -52,6 +52,7 @@ export default function CenterPanel({
 
   const stats = [
     getStatRow("WIN PERCENTAGE", "game", "win_percentage"),
+    getStatRow("ELIMS / 10M", "average", "eliminations_avg_per_10_min"),
     getStatRow("ELIMS PER LIFE", "average", "eliminations_per_life"),
     getStatRow("DEATHS AVG/10M", "average", "deaths_avg_per_10_min", true),
     getStatRow("FINAL BLOWS /10M", "average", "final_blows_avg_per_10_min"),
