@@ -125,7 +125,7 @@ export default function LeftPanel({ logic }: { logic: any }) {
 
           {isHeroGridOpen && (
             <div className="hero-grid p-1 border rounded bg-white overflow-auto shadow">
-              {heroes.map((hero) => (
+              {heroes.map((hero: any) => (
                 <div
                   key={hero.key}
                   className={`hero-item ${hero.key === selectedHero?.key ? "active" : ""}`}
