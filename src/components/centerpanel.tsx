@@ -66,10 +66,9 @@ export default function CenterPanel({
     <div className="bg-white d-flex flex-column px-4 py-3 center-panel-wrapper h-100">
       <div className="d-flex justify-content-between align-items-center mb-4 position-relative">
         <select
-          className="form-select border-0 fw-bold text-uppercase"
+          className="form-select border-0 fw-bold text-uppercase gamemode-select"
           value={gamemode}
           onChange={(e) => onGamemodeChange(e.target.value)}
-          style={{ width: "150px", backgroundColor: "transparent" }}
         >
           <option value="competitive">COMPETITIVE</option>
           <option value="quickplay">QUICKPLAY</option>
@@ -80,11 +79,11 @@ export default function CenterPanel({
         >
           UPDATE STATS
         </button>
-        <div style={{ width: "150px" }}></div>
+        <div className="header-spacer"></div>
       </div>
 
       <div className="d-flex justify-content-center my-3">
-        <img src="/logo_vs.png" alt="VS" style={{ width: "80px" }} />
+        <img src="/logo_vs.png" alt="VS" className="vs-logo-img" />
       </div>
 
       <div className="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2 mt-3">
@@ -128,48 +127,27 @@ export default function CenterPanel({
             className="d-flex align-items-center justify-content-between mb-3"
           >
             <div
-              className={`fw-bold text-end ${stat.leftWins ? "text-orange-win" : "text-secondary"}`}
-              style={{ width: "60px" }}
+              className={`fw-bold text-end stat-value-left ${stat.leftWins ? "text-orange-win" : "text-secondary"}`}
             >
               {stat.leftVal}
             </div>
-            <div
-              className="flex-grow-1 mx-3 bg-light rounded-pill"
-              style={{ height: "10px", position: "relative" }}
-            >
+            <div className="flex-grow-1 mx-3 bg-light rounded-pill stat-bar-container-left">
               <div
-                className={`rounded-pill ${stat.leftWins ? "bg-orange-win" : "bg-gray-lose"}`}
-                style={{
-                  width: `${stat.leftPct}%`,
-                  height: "100%",
-                  transition: "width 0.4s",
-                  position: "absolute",
-                  right: 0,
-                }}
+                className={`rounded-pill stat-bar-fill-left ${stat.leftWins ? "bg-orange-win" : "bg-gray-lose"}`}
+                style={{ width: `${stat.leftPct}%` }}
               ></div>
             </div>
-            <div
-              className="fw-bold text-secondary text-center text-uppercase"
-              style={{ width: "140px", fontSize: "0.75rem" }}
-            >
+            <div className="fw-bold text-secondary text-center text-uppercase stat-row-label">
               {stat.label}
             </div>
-            <div
-              className="flex-grow-1 mx-3 bg-light rounded-pill"
-              style={{ height: "10px" }}
-            >
+            <div className="flex-grow-1 mx-3 bg-light rounded-pill stat-bar-container-right">
               <div
-                className={`rounded-pill ${!stat.leftWins ? "bg-orange-win" : "bg-gray-lose"}`}
-                style={{
-                  width: `${stat.rightPct}%`,
-                  height: "100%",
-                  transition: "width 0.4s",
-                }}
+                className={`rounded-pill stat-bar-fill-right ${!stat.leftWins ? "bg-orange-win" : "bg-gray-lose"}`}
+                style={{ width: `${stat.rightPct}%` }}
               ></div>
             </div>
             <div
-              className={`fw-bold text-start ${!stat.leftWins ? "text-orange-win" : "text-secondary"}`}
-              style={{ width: "60px" }}
+              className={`fw-bold text-start stat-value-right ${!stat.leftWins ? "text-orange-win" : "text-secondary"}`}
             >
               {stat.rightVal}
             </div>

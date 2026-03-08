@@ -31,12 +31,9 @@
   background-color: #d88b10;
 }
 
-.gamemode-text {
-  font-size: 0.9rem;
-}
-
-.gamemode-icon {
-  font-size: 0.7rem;
+.gamemode-select {
+  width: 150px;
+  background-color: transparent;
 }
 
 .btn-update-stats {
@@ -54,31 +51,13 @@
   color: white !important;
 }
 
-.spacer-80 {
-  width: 80px;
-}
-
-.vs-logo-wrapper {
-  top: 140px;
-  z-index: 20;
+.header-spacer {
+  width: 150px;
 }
 
 .vs-logo-img {
-  height: 100px;
+  width: 80px;
   object-fit: contain;
-}
-
-.match-header-wrapper {
-  margin-top: 180px;
-}
-
-.match-stats-title {
-  font-size: 1.2rem;
-  color: #cdd3d8 !important;
-}
-
-.switch-text {
-  font-size: 0.85rem;
 }
 
 .bg-console-orange {
@@ -95,34 +74,38 @@
   opacity: 0.85;
 }
 
-.switch-option.inactive {
-  color: #6c757d;
+.stat-value-left {
+  width: 60px;
 }
 
-.switch-option.inactive:hover {
-  background-color: #e9ecef;
-  color: #212529;
+.stat-bar-container-left {
+  height: 10px;
+  position: relative;
 }
 
-.switch-divider {
-  height: 16px;
-  border-left: 1px solid #dee2e6;
-  margin: 0 4px;
+.stat-bar-fill-left {
+  height: 100%;
+  transition: width 0.4s;
+  position: absolute;
+  right: 0;
 }
 
-.stat-val {
-  width: 50px;
-  font-size: 0.95rem;
+.stat-row-label {
+  width: 140px;
+  font-size: 0.75rem;
 }
 
-.stat-bar-wrapper {
-  height: 8px;
-  background-color: #e9ecef;
+.stat-bar-container-right {
+  height: 10px;
 }
 
-.stat-label {
-  width: 160px;
-  font-size: 0.85rem;
+.stat-bar-fill-right {
+  height: 100%;
+  transition: width 0.4s;
+}
+
+.stat-value-right {
+  width: 60px;
 }
 
 .text-orange-win {
@@ -131,10 +114,8 @@
 
 .bg-orange-win {
   background-color: #f09c13 !important;
-  height: 100%;
 }
 
 .bg-gray-lose {
   background-color: #cdd3d8 !important;
-  height: 100%;
 }

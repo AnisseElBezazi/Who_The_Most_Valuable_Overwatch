@@ -1,18 +1,24 @@
 .search-container-left {
   width: 100%;
   max-width: 300px;
-  border-color: #f99e1a !important;
+  border: 1px solid #f99e1a !important;
+  border-radius: 4px;
+  overflow: hidden;
+  background-color: white;
+  margin-right: 20px;
 }
 
 .search-btn-left {
   width: 45px;
   height: 38px;
+  flex-shrink: 0;
 }
 
 .search-input-left {
   height: 38px;
   font-size: 0.9rem;
   background-color: #e9ecef;
+  border-radius: 0;
 }
 
 .search-input-left:focus {
@@ -21,9 +27,17 @@
   border-color: inherit !important;
 }
 
+.error-alert-left {
+  max-width: 300px;
+  font-size: 0.85rem;
+  color: #856404;
+  background-color: #fff3cd;
+}
+
 .bg-theme-orange {
   background-color: #f09c13;
 }
+
 .text-theme-orange {
   color: #f09c13;
 }
@@ -37,13 +51,16 @@
 .main-content::-webkit-scrollbar {
   width: 6px;
 }
+
 .main-content::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
+
 .main-content::-webkit-scrollbar-thumb {
   background: #f09c13;
   border-radius: 10px;
 }
+
 .main-content::-webkit-scrollbar-thumb:hover {
   background: #d48a11;
 }
@@ -53,6 +70,11 @@
   flex-wrap: wrap;
   gap: 4px;
   max-height: 200px;
+  position: absolute;
+  top: 100%;
+  left: 15px;
+  right: 15px;
+  z-index: 10;
 }
 
 .hero-item {
@@ -74,6 +96,7 @@
   width: 350px;
   z-index: 20;
 }
+
 .header-banner {
   width: 410px;
   height: 150px;
@@ -93,11 +116,16 @@
   top: 25px;
   z-index: 2;
 }
+
 .header-pseudo {
   z-index: 2;
   top: 50%;
   transform: translateY(-50%);
   left: 490px;
+}
+
+.time-played-hours {
+  font-size: 1.3rem;
 }
 
 .rank-circle {
@@ -114,6 +142,12 @@
 .select-hero-btn {
   background-color: #d0d5d9;
   font-size: 0.85rem;
+}
+
+.rank-icon-left {
+  width: 40px;
+  height: 40px;
+  margin-left: auto;
 }
 
 .fs-small-custom {

@@ -18,6 +18,7 @@ export default function LeftPanel({ logic }: { logic: any }) {
     rankDivision,
     rankTier,
     rankIcon,
+    error,
   } = logic;
 
   const score = calculatePlayerScore(
@@ -25,24 +26,16 @@ export default function LeftPanel({ logic }: { logic: any }) {
     selectedHero,
   );
 
+  const timePlayedSeconds =
+    playerStats?.[selectedHero?.key]?.game?.time_played || 0;
+  const timePlayedHours = Math.round(timePlayedSeconds / 3600);
+
   return (
     <div className="d-flex flex-column h-100">
-      <div
-        className="d-flex mb-3 shadow-sm mt-2 flex-shrink-0"
-        style={{
-          borderRadius: "4px",
-          overflow: "hidden",
-          border: "1px solid #F99E1A",
-          backgroundColor: "white",
-          width: "100%",
-          maxWidth: "300px",
-          marginRight: "20px",
-        }}
-      >
+      <div className="d-flex mb-3 shadow-sm mt-2 flex-shrink-0 search-container-left">
         <button
-          className="bg-theme-orange border-0 d-flex align-items-center justify-content-center"
-          onClick={handleSearch}
-          style={{ width: "45px", flexShrink: 0, height: "38px" }}
+          className="bg-theme-orange border-0 d-flex align-items-center justify-content-center search-btn-left"
+          onClick={() => handleSearch()}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -56,22 +49,38 @@ export default function LeftPanel({ logic }: { logic: any }) {
         </button>
         <input
           type="text"
-          className="form-control border-0 shadow-none"
+          className="form-control border-0 shadow-none search-input-left"
           placeholder="Pseudo#0000"
-          style={{ borderRadius: "0", height: "38px", fontSize: "0.9rem" }}
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSearch()}
         />
       </div>
 
+      {error && (
+        <div className="alert alert-warning border-warning p-3 mb-3 shadow-sm error-alert-left">
+          <div className="fw-bold mb-1">{error}</div>
+          <div className="small">
+            Pour mettre ta carrière en public :
+            <br />
+            <strong>
+              Menu &gt; Options &gt; Social &gt; Visibilité du profil &gt;
+              Public
+            </strong>
+            .
+            <br />
+            <span className="text-muted">
+              la mise à jour du profil Blizzard peut prendre plusieurs jours.
+            </span>
+          </div>
+        </div>
+      )}
+
       <div className="mb-0 position-relative header-container flex-shrink-0">
         <div
           className="position-absolute top-0 start-0 header-banner"
           style={{
             backgroundImage: `url(${selectedHero?.backgrounds?.[2]?.url || selectedHero?.portrait || ""})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center 20%",
           }}
         ></div>
         <div className="bg-white p-1 position-absolute header-avatar overflow-hidden">
@@ -91,8 +100,13 @@ export default function LeftPanel({ logic }: { logic: any }) {
 
       <div className="bg-white d-flex flex-column pt-4 pb-3 shadow-sm flex-grow-1 main-content overflow-hidden">
         <div className="mb-3 px-3 mt-2 flex-shrink-0">
-          <div className="fw-bold text-uppercase text-dark lh-1 fs-2">
-            {selectedHero?.name || "CASSIDY"}
+          <div className="d-flex align-items-baseline gap-4">
+            <div className="fw-bold text-uppercase text-dark lh-1 fs-2">
+              {selectedHero?.name || "CASSIDY"}
+            </div>
+            <div className="text-secondary fw-bold time-played-hours">
+              {timePlayedHours}H
+            </div>
           </div>
           <div className="fw-bold text-theme-orange">
             {typeof selectedHero?.role === "string"
@@ -101,30 +115,16 @@ export default function LeftPanel({ logic }: { logic: any }) {
           </div>
         </div>
 
-        <div
-          className="px-3 mt-2 w-100 select-hero-container position-relative flex-shrink-0"
-          style={{ maxWidth: "260px" }}
-        >
+        <div className="px-3 mt-2 w-100 select-hero-container position-relative flex-shrink-0">
           <button
             onClick={() => setIsHeroGridOpen(!isHeroGridOpen)}
             className="btn w-100 d-flex justify-content-between align-items-center fw-bold mb-2 border rounded select-hero-btn"
-            style={{ backgroundColor: "#d0d5d9", fontSize: "0.85rem" }}
           >
             SELECT HERO <span>{isHeroGridOpen ? "▲" : "▼"}</span>
           </button>
 
           {isHeroGridOpen && (
-            <div
-              className="hero-grid p-1 border rounded bg-white overflow-auto shadow"
-              style={{
-                maxHeight: "200px",
-                position: "absolute",
-                top: "100%",
-                left: "15px",
-                right: "15px",
-                zIndex: 10,
-              }}
-            >
+            <div className="hero-grid p-1 border rounded bg-white overflow-auto shadow">
               {heroes.map((hero) => (
                 <div
                   key={hero.key}
@@ -133,7 +133,6 @@ export default function LeftPanel({ logic }: { logic: any }) {
                     fetchHeroDetails(hero.key);
                     setIsHeroGridOpen(false);
                   }}
-                  style={{ cursor: "pointer" }}
                 >
                   <img
                     src={hero.portrait}
@@ -146,10 +145,7 @@ export default function LeftPanel({ logic }: { logic: any }) {
           )}
         </div>
 
-        <div
-          className="px-3 mt-4 mb-auto w-100 stats-container overflow-auto"
-          style={{ maxWidth: "260px" }}
-        >
+        <div className="px-3 mt-4 mb-auto w-100 stats-container overflow-auto">
           {playerStats &&
           selectedHero &&
           playerStats[selectedHero.key]?.hero_specific ? (
@@ -174,10 +170,7 @@ export default function LeftPanel({ logic }: { logic: any }) {
         </div>
 
         <div className="d-flex align-items-center px-3 mt-4 w-100 flex-shrink-0">
-          <div
-            className="rounded-circle border border-3 border-warning d-flex justify-content-center align-items-center fw-bold fs-3 me-3 text-dark rank-circle flex-shrink-0"
-            style={{ width: "80px", height: "80px" }}
-          >
+          <div className="rounded-circle border border-3 border-warning d-flex justify-content-center align-items-center fw-bold fs-3 me-3 text-dark rank-circle flex-shrink-0">
             {score || 0}
           </div>
           <div className="me-3">
@@ -193,11 +186,7 @@ export default function LeftPanel({ logic }: { logic: any }) {
             </div>
           </div>
           {rankIcon && (
-            <img
-              src={rankIcon}
-              alt="Rank"
-              style={{ width: "40px", height: "40px", marginLeft: "auto" }}
-            />
+            <img src={rankIcon} alt="Rank" className="rank-icon-left" />
           )}
         </div>
       </div>
@@ -213,17 +202,7 @@ const StatLine = ({
   value: string | number;
 }) => (
   <div className="d-flex justify-content-between mb-1 border-bottom border-light pb-1">
-    <span
-      className="text-secondary fw-bold fs-small-custom"
-      style={{ fontSize: "0.75rem" }}
-    >
-      {label}
-    </span>
-    <span
-      className="fw-bold text-dark fs-small-custom"
-      style={{ fontSize: "0.75rem" }}
-    >
-      {value}
-    </span>
+    <span className="text-secondary fw-bold fs-small-custom">{label}</span>
+    <span className="fw-bold text-dark fs-small-custom">{value}</span>
   </div>
 );

@@ -13,6 +13,7 @@ export function usePanelLogic(
   const [heroes, setHeroes] = useState<any[]>([]);
   const [selectedHero, setSelectedHero] = useState<any>(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchHeroes() {
@@ -43,20 +44,34 @@ export function usePanelLogic(
   }
 
   const handleSearch = async (tag?: string) => {
-    // On force l'utilisation d'une string. Si tag est un event, on prend searchInput.
+    setError(null);
     const tagToUse = typeof tag === "string" ? tag : searchInput;
     if (!tagToUse || tagToUse.includes("[object")) return;
 
     const formatted = tagToUse.replace("#", "-");
-    setSearchedBattletag(formatted);
 
     try {
       const resPlayer = await fetch(`/api/player/${formatted}/info`);
-      if (resPlayer.ok) {
-        const data = await resPlayer.json();
-        setPlayerData(data);
+      if (!resPlayer.ok) {
+        setError(
+          "Joueur introuvable. Vérifie l'orthographe du pseudo et du tag.",
+        );
+        return;
       }
+
+      const data = await resPlayer.json();
+
+      if (data.summary?.privacy === "private") {
+        setError("La carrière de ce joueur est en privé.");
+        setPlayerData(data); // On garde les données de base (avatar/pseudo)
+        return;
+      }
+
+      setPlayerData(data);
+      setSearchedBattletag(formatted);
+      setError(null);
     } catch (e) {
+      setError("Erreur lors de la recherche.");
       console.error("Erreur recherche", e);
     }
   };
@@ -107,6 +122,7 @@ export function usePanelLogic(
     handleSearch,
     fetchHeroDetails,
     refresh,
+    error,
     rankDivision:
       playerData?.summary?.competitive?.[platform]?.[
         roleKey

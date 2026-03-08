@@ -54,12 +54,17 @@
   border-radius: 10px;
 }
 
-.hero-grid-right {
+.hero-grid-dropdown-right {
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
   justify-content: flex-end;
   max-height: 200px;
+  position: absolute;
+  top: 100%;
+  left: 15px;
+  right: 15px;
+  z-index: 10;
 }
 
 .hero-item-right {
@@ -134,4 +139,15 @@
 
 .fs-small-custom {
   font-size: 0.75rem;
+}
+
+.alert-private-right {
+  max-width: 300px;
+  font-size: 0.85rem;
+  color: #856404;
+  background-color: #fff3cd;
+}
+
+.time-played-text-right {
+  font-size: 1.3rem;
 }

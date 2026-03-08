@@ -18,6 +18,7 @@ export default function RightPanel({ logic }: { logic: any }) {
     rankDivision,
     rankTier,
     rankIcon,
+    error,
   } = logic;
 
   const score = calculatePlayerScore(
@@ -25,12 +26,16 @@ export default function RightPanel({ logic }: { logic: any }) {
     selectedHero,
   );
 
+  const timePlayedSeconds =
+    playerStats?.[selectedHero?.key]?.game?.time_played || 0;
+  const timePlayedHours = Math.round(timePlayedSeconds / 3600);
+
   return (
     <div className="d-flex flex-column align-items-end h-100">
       <div className="d-flex mb-3 shadow-sm mt-2 panel-search-right flex-shrink-0">
         <button
           className="bg-theme-gray search-submit-btn-right"
-          onClick={handleSearch}
+          onClick={() => handleSearch()}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -52,13 +57,30 @@ export default function RightPanel({ logic }: { logic: any }) {
         />
       </div>
 
+      {error && (
+        <div className="alert alert-warning border-warning p-3 mb-3 shadow-sm text-end alert-private-right">
+          <div className="fw-bold mb-1">{error}</div>
+          <div className="small">
+            Pour mettre ta carrière en public :
+            <br />
+            <strong>
+              Menu &gt; Options &gt; Social &gt; Visibilité du profil &gt;
+              Public
+            </strong>
+            .
+            <br />
+            <span className="text-muted">
+              Déconnecte-toi du jeu pour forcer la mise à jour Blizzard.
+            </span>
+          </div>
+        </div>
+      )}
+
       <div className="mb-0 position-relative header-container-right flex-shrink-0">
         <div
           className="position-absolute top-0 end-0 header-banner-right"
           style={{
             backgroundImage: `url(${selectedHero?.backgrounds?.[2]?.url || selectedHero?.portrait || ""})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center 20%",
           }}
         ></div>
         <div className="bg-white p-1 position-absolute header-avatar-right overflow-hidden">
@@ -79,8 +101,13 @@ export default function RightPanel({ logic }: { logic: any }) {
       <div className="bg-white d-flex flex-column pt-4 pb-3 shadow-sm flex-grow-1 main-content-right overflow-hidden">
         <div className="main-content-inner-right flex-grow-1 d-flex flex-column overflow-hidden">
           <div className="mb-3 px-3 mt-2 text-end flex-shrink-0">
-            <div className="fw-bold text-uppercase text-dark lh-1 fs-2">
-              {selectedHero?.name || "ANA"}
+            <div className="d-flex align-items-baseline justify-content-end gap-4">
+              <div className="text-secondary fw-bold time-played-text-right">
+                {timePlayedHours}H
+              </div>
+              <div className="fw-bold text-uppercase text-dark lh-1 fs-2">
+                {selectedHero?.name || "ANA"}
+              </div>
             </div>
             <div className="fw-bold text-theme-gray">
               {typeof selectedHero?.role === "string"
@@ -98,18 +125,8 @@ export default function RightPanel({ logic }: { logic: any }) {
             </button>
 
             {isHeroGridOpen && (
-              <div
-                className="hero-grid-right p-1 border rounded bg-white overflow-auto shadow"
-                style={{
-                  maxHeight: "200px",
-                  position: "absolute",
-                  top: "100%",
-                  left: "15px",
-                  right: "15px",
-                  zIndex: 10,
-                }}
-              >
-                {heroes.map((hero) => (
+              <div className="hero-grid-dropdown-right p-1 border rounded bg-white overflow-auto shadow">
+                {heroes.map((hero: any) => (
                   <div
                     key={hero.key}
                     className={`hero-item-right ${hero.key === selectedHero?.key ? "active" : ""}`}
@@ -117,7 +134,6 @@ export default function RightPanel({ logic }: { logic: any }) {
                       fetchHeroDetails(hero.key);
                       setIsHeroGridOpen(false);
                     }}
-                    style={{ cursor: "pointer" }}
                   >
                     <img
                       src={hero.portrait}
@@ -156,12 +172,7 @@ export default function RightPanel({ logic }: { logic: any }) {
 
           <div className="d-flex align-items-center px-3 mt-4 justify-content-end w-100 flex-shrink-0">
             {rankIcon && (
-              <img
-                src={rankIcon}
-                alt="Rank"
-                className="rank-icon-right me-2"
-                style={{ width: "40px", height: "40px" }}
-              />
+              <img src={rankIcon} alt="Rank" className="rank-icon-right me-2" />
             )}
             <div className="text-end me-3">
               <div className="fw-bold text-muted small text-uppercase">
@@ -175,10 +186,7 @@ export default function RightPanel({ logic }: { logic: any }) {
                   : rankDivision}
               </div>
             </div>
-            <div
-              className="rounded-circle border border-3 border-dark d-flex justify-content-center align-items-center fw-bold fs-3 text-dark rank-circle-right flex-shrink-0"
-              style={{ width: "80px", height: "80px" }}
-            >
+            <div className="rounded-circle border border-3 border-dark d-flex justify-content-center align-items-center fw-bold fs-3 text-dark rank-circle-right flex-shrink-0">
               {score || 0}
             </div>
           </div>
@@ -196,17 +204,7 @@ const StatLine = ({
   value: string | number;
 }) => (
   <div className="d-flex justify-content-between mb-1 border-bottom border-light pb-1 w-100">
-    <span
-      className="text-secondary fw-bold fs-small-custom"
-      style={{ fontSize: "0.75rem" }}
-    >
-      {label}
-    </span>
-    <span
-      className="fw-bold text-dark fs-small-custom"
-      style={{ fontSize: "0.75rem" }}
-    >
-      {value}
-    </span>
+    <span className="text-secondary fw-bold fs-small-custom">{label}</span>
+    <span className="fw-bold text-dark fs-small-custom">{value}</span>
   </div>
 );
