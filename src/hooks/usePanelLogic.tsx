@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 
-export function usePanelLogic(defaultHeroKey: string) {
+export function usePanelLogic(
+  defaultHeroKey: string,
+  gamemode: string,
+  platform: string,
+) {
   const [isHeroGridOpen, setIsHeroGridOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [searchedBattletag, setSearchedBattletag] = useState("");
@@ -31,7 +35,7 @@ export function usePanelLogic(defaultHeroKey: string) {
         `https://overfast-api.tekrop.fr/heroes/${heroKey}?locale=fr-fr`,
       );
       const fullHeroData = await res.json();
-      setSelectedHero(fullHeroData);
+      setSelectedHero({ ...fullHeroData, key: heroKey });
     } catch (e) {
       console.error("Erreur détails héros", e);
     }
@@ -55,7 +59,7 @@ export function usePanelLogic(defaultHeroKey: string) {
     async function fetchStats() {
       try {
         const resStats = await fetch(
-          `/api/player/${searchedBattletag}/stats?gamemode=quickplay&platform=console&hero=${selectedHero.key}`,
+          `/api/player/${searchedBattletag}/stats?gamemode=${gamemode}&platform=${platform}&hero=${selectedHero.key}`,
         );
         const dataStats = await resStats.json();
         setPlayerStats(dataStats);
@@ -64,7 +68,7 @@ export function usePanelLogic(defaultHeroKey: string) {
       }
     }
     fetchStats();
-  }, [searchedBattletag, selectedHero?.key]);
+  }, [searchedBattletag, selectedHero?.key, gamemode, platform]);
 
   let rankDivision = "UNRANKED";
   let rankTier = "";
@@ -76,9 +80,7 @@ export function usePanelLogic(defaultHeroKey: string) {
         ? selectedHero.role.toLowerCase()
         : selectedHero.role?.key?.toLowerCase();
 
-    const compInfo =
-      playerData.summary.competitive.pc?.[roleKey] ||
-      playerData.summary.competitive.console?.[roleKey];
+    const compInfo = playerData.summary.competitive[platform]?.[roleKey];
 
     if (compInfo && compInfo.division) {
       rankDivision = compInfo.division.toUpperCase();
