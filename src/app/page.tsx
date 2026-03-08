@@ -13,14 +13,18 @@ export default function Page() {
   const leftLogic = usePanelLogic("cassidy", gamemode, leftPlatform);
   const rightLogic = usePanelLogic("ana", gamemode, rightPlatform);
 
+  const handleUpdateAll = () => {
+    leftLogic.refresh();
+    rightLogic.refresh();
+  };
+
   return (
     <div
       className="d-flex justify-content-center align-items-stretch w-100 vh-100 overflow-hidden"
-      style={{ gap: "0px", padding: "3vh 3vw", boxSizing: "border-box" }}
+      style={{ padding: "3vh 3vw" }}
     >
       <LeftPanel logic={leftLogic} />
-
-      <div className="flex-grow-1 h-100" style={{ minWidth: 0 }}>
+      <div className="flex-grow-1 h-100">
         <CenterPanel
           leftStats={leftLogic.playerStats}
           leftHero={leftLogic.selectedHero?.key}
@@ -32,6 +36,7 @@ export default function Page() {
           onLeftPlatformChange={setLeftPlatform}
           rightPlatform={rightPlatform}
           onRightPlatformChange={setRightPlatform}
+          onUpdateStats={handleUpdateAll}
         />
       </div>
       <RightPanel logic={rightLogic} />

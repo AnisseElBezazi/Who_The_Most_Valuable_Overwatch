@@ -12,6 +12,7 @@ export function usePanelLogic(
   const [playerStats, setPlayerStats] = useState<any>(null);
   const [heroes, setHeroes] = useState<any[]>([]);
   const [selectedHero, setSelectedHero] = useState<any>(null);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   useEffect(() => {
     async function fetchHeroes() {
@@ -41,12 +42,13 @@ export function usePanelLogic(
     }
   }
 
-  const handleSearch = async () => {
-    if (!searchInput) return;
-    const formattedBattletag = searchInput.replace("#", "-");
-    setSearchedBattletag(formattedBattletag);
+  const handleSearch = async (tag?: string) => {
+    const targetTag = tag || searchInput.replace("#", "-");
+    if (!targetTag) return;
+
+    setSearchedBattletag(targetTag);
     try {
-      const resPlayer = await fetch(`/api/player/${formattedBattletag}/info`);
+      const resPlayer = await fetch(`/api/player/${targetTag}/info`);
       const data = await resPlayer.json();
       setPlayerData(data);
     } catch (e) {
@@ -68,26 +70,20 @@ export function usePanelLogic(
       }
     }
     fetchStats();
-  }, [searchedBattletag, selectedHero?.key, gamemode, platform]);
+  }, [
+    searchedBattletag,
+    selectedHero?.key,
+    gamemode,
+    platform,
+    refreshTrigger,
+  ]);
 
-  let rankDivision = "UNRANKED";
-  let rankTier = "";
-  let rankIcon = "";
-
-  if (playerData?.summary?.competitive && selectedHero?.role) {
-    const roleKey =
-      typeof selectedHero.role === "string"
-        ? selectedHero.role.toLowerCase()
-        : selectedHero.role?.key?.toLowerCase();
-
-    const compInfo = playerData.summary.competitive[platform]?.[roleKey];
-
-    if (compInfo && compInfo.division) {
-      rankDivision = compInfo.division.toUpperCase();
-      rankTier = compInfo.tier;
-      rankIcon = compInfo.rank_icon;
+  const refresh = () => {
+    if (searchedBattletag) {
+      handleSearch(searchedBattletag);
+      setRefreshTrigger((prev) => prev + 1);
     }
-  }
+  };
 
   return {
     isHeroGridOpen,
@@ -100,8 +96,18 @@ export function usePanelLogic(
     selectedHero,
     handleSearch,
     fetchHeroDetails,
-    rankDivision,
-    rankTier,
-    rankIcon,
+    refresh,
+    rankDivision:
+      playerData?.summary?.competitive?.[platform]?.[
+        selectedHero?.role?.toLowerCase()
+      ]?.division?.toUpperCase() || "UNRANKED",
+    rankTier:
+      playerData?.summary?.competitive?.[platform]?.[
+        selectedHero?.role?.toLowerCase()
+      ]?.tier || "",
+    rankIcon:
+      playerData?.summary?.competitive?.[platform]?.[
+        selectedHero?.role?.toLowerCase()
+      ]?.rank_icon || "",
   };
 }
