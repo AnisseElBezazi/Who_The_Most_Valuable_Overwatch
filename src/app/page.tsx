@@ -3,7 +3,7 @@ import { useState } from "react";
 import LeftPanel from "@/components/leftpanel";
 import CenterPanel from "@/components/centerpanel";
 import RightPanel from "@/components/rightpanel";
-import DemoModal, { DemoMatch } from "@/components/demomodal";
+import DemoBanner, { DEMO } from "@/components/demobanner";
 import { usePanelLogic } from "@/hooks/usePanelLogic";
 
 export default function Page() {
@@ -20,13 +20,13 @@ export default function Page() {
   };
 
   // Duel d'exemple : réglages, héros et recherche des deux joueurs
-  const handleDemo = (match: DemoMatch) => {
-    setGamemode(match.gamemode);
-    setLeftPlatform(match.platform);
-    setRightPlatform(match.platform);
+  const handleDemo = () => {
+    setGamemode(DEMO.gamemode);
+    setLeftPlatform(DEMO.left.platform);
+    setRightPlatform(DEMO.right.platform);
     for (const [logic, player] of [
-      [leftLogic, match.left],
-      [rightLogic, match.right],
+      [leftLogic, DEMO.left],
+      [rightLogic, DEMO.right],
     ] as const) {
       logic.fetchHeroDetails(player.hero);
       logic.setSearchInput(player.name);
@@ -35,28 +35,30 @@ export default function Page() {
   };
 
   return (
-    <div
-      className="d-flex justify-content-center align-items-stretch w-100 vh-100 overflow-hidden"
-      style={{ padding: "3vh 3vw" }}
-    >
-      <DemoModal onPick={handleDemo} />
-      <LeftPanel logic={leftLogic} />
-      <div className="flex-grow-1 h-100">
-        <CenterPanel
-          leftStats={leftLogic.playerStats}
-          leftHero={leftLogic.selectedHero?.key}
-          rightStats={rightLogic.playerStats}
-          rightHero={rightLogic.selectedHero?.key}
-          gamemode={gamemode}
-          onGamemodeChange={setGamemode}
-          leftPlatform={leftPlatform}
-          onLeftPlatformChange={setLeftPlatform}
-          rightPlatform={rightPlatform}
-          onRightPlatformChange={setRightPlatform}
-          onUpdateStats={handleUpdateAll}
-        />
+    <div className="d-flex flex-column w-100 vh-100 overflow-hidden">
+      <DemoBanner onRun={handleDemo} />
+      <div
+        className="d-flex justify-content-center align-items-stretch w-100 flex-grow-1 overflow-hidden"
+        style={{ padding: "3vh 3vw", minHeight: 0 }}
+      >
+        <LeftPanel logic={leftLogic} />
+        <div className="flex-grow-1 h-100">
+          <CenterPanel
+            leftStats={leftLogic.playerStats}
+            leftHero={leftLogic.selectedHero?.key}
+            rightStats={rightLogic.playerStats}
+            rightHero={rightLogic.selectedHero?.key}
+            gamemode={gamemode}
+            onGamemodeChange={setGamemode}
+            leftPlatform={leftPlatform}
+            onLeftPlatformChange={setLeftPlatform}
+            rightPlatform={rightPlatform}
+            onRightPlatformChange={setRightPlatform}
+            onUpdateStats={handleUpdateAll}
+          />
+        </div>
+        <RightPanel logic={rightLogic} />
       </div>
-      <RightPanel logic={rightLogic} />
     </div>
   );
 }
